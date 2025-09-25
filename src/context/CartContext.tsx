@@ -22,7 +22,7 @@ export function CartProvider({ children }: CartProviderProps) {
       if (existingItem) {
         return prevItems.map((i) =>
           i.id === item.id
-            ? { ...i, quantity: i.quantity + 1 } // Always add 1
+            ? { ...i, quantity: i.quantity + 1 }
             : i
         );
       } else {
