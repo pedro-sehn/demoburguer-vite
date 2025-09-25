@@ -2,14 +2,43 @@ import { Header } from "./components/Header";
 import Footer from "./components/Footer";
 import Menu from "./components/Menu";
 import { CartProvider } from "./context/CartContext";
+import { useEffect, useState } from "react";
+import type { EstablishmentData } from "./types/establishment";
 
 function App() {
+  const [establishmentData, setEstablishmentData] =
+    useState<EstablishmentData | null>(null);
+
+  useEffect(() => {
+    async function getEstablishmentData() {
+      try {
+        const res = await fetch(
+          "https://demoburger.stbl.com.br/core/v2/app/store/config/?format=json&app_variant=mobile"
+        );
+        const data: EstablishmentData = await res.json();
+
+        if (!data.success) throw new Error("Could not fetch company data");
+
+        setEstablishmentData(data);
+      } catch (err: any) {
+        console.error(err);
+        throw new Error("Could not fetch company data");
+      }
+    }
+
+    getEstablishmentData();
+  }, []);
+
   return (
     <>
       <CartProvider>
-        <Header />
-        <Menu />
-        <Footer />
+        <div
+          style={{ backgroundColor: establishmentData?.data.background_color }}
+        >
+          <Header />
+          <Menu />
+          <Footer />
+        </div>
       </CartProvider>
     </>
   );

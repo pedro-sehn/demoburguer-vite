@@ -1,6 +1,6 @@
 import { Skeleton } from "@mui/material";
 import { useEffect, useState } from "react";
-import type { EstablishmentData } from "../types/establishmente";
+import type { EstablishmentData } from "../types/establishment";
 
 export function Header() {
   const [establishmentData, setEstablishmentData] =
@@ -28,43 +28,58 @@ export function Header() {
 
   useEffect(() => {
     if (error) console.error(error);
-    // No futuro dava pra tentar inplementar com um sistema de monitoramento de erros
   }, [error]);
 
+  if (!establishmentData) {
+    return (
+      <header className="p-6 flex flex-col items-center text-center">
+        <Skeleton variant="circular" width={80} height={80} />
+        <Skeleton variant="text" width={120} height={32} className="mt-3" />
+        <Skeleton variant="text" width={80} height={24} className="mt-2" />
+      </header>
+    );
+  }
+
+  const {
+    logo,
+    name,
+    background_image,
+    background_color,
+    primary_color,
+    is_open,
+  } = establishmentData.data;
+
   return (
-    <header className="p-6">
-      {establishmentData ? (
-        <>
-          <div className="flex items-center space-x-8">
-            <div className="flex rounded-full border-5 border-gray-700">
-              <img
-                className="w-20 rounded-full border-4 border-red-400"
-                src={establishmentData.data.logo}
-                alt={`${establishmentData.data.name} logo`}
-              />
-            </div>
-            <h1 className="text-2xl">{establishmentData.data.name}</h1>
-          </div>
-        </>
-      ) : (
-        <div className="flex flex-col">
-          <div>
-            <div className="flex gap-8 items-center">
-              <Skeleton
-                variant="circular"
-                width={80}
-                height={80}
-              />
-              <Skeleton variant="text" width={120} height={32} />
-            </div>
-            <div className="flex space-x-4 py-6">
-              <Skeleton variant="text" width={80} height={32} />
-              <Skeleton variant="text" width={80} height={32} />
-              <Skeleton variant="text" width={80} height={32} />
-            </div>
-          </div>
-        </div>
-      )}
+    <header
+      className="relative w-full text-white flex flex-col items-center text-center p-6"
+      style={{
+        background: background_image
+          ? `url(${background_image}) center/cover no-repeat`
+          : primary_color,
+      }}
+    >
+      <div
+        className="absolute inset-0"
+        style={{ backgroundColor: background_color }}
+      ></div>
+
+      <div className="relative flex flex-col items-center">
+        <img
+          className="w-20 h-20 rounded-full border-4 border-white shadow-lg"
+          src={logo}
+          alt={`${name} logo`}
+        />
+
+        <h1 className="text-2xl font-bold mt-3">{name}</h1>
+
+        <span
+          className={`mt-2 text-sm font-medium px-3 py-1 rounded-full ${
+            is_open ? "bg-green-600" : "bg-red-600"
+          }`}
+        >
+          {is_open ? "Aberto agora" : "Fechado"}
+        </span>
+      </div>
     </header>
   );
 }
