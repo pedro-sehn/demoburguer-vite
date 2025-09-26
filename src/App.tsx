@@ -4,10 +4,13 @@ import Menu from "./components/Menu";
 import { CartProvider } from "./context/CartContext";
 import { useEffect, useState } from "react";
 import type { EstablishmentData } from "./types/establishment";
+import type { ThemeData } from "./types/theme";
+import { ThemeProvider } from "./context/ThemeContext";
 
 function App() {
   const [establishmentData, setEstablishmentData] =
     useState<EstablishmentData | null>(null);
+  const [theme, setTheme] = useState<ThemeData | null>(null);
 
   useEffect(() => {
     async function getEstablishmentData() {
@@ -20,6 +23,11 @@ function App() {
         if (!data.success) throw new Error("Could not fetch company data");
 
         setEstablishmentData(data);
+        setTheme({
+          primary: data.data.primary_color,
+          secondary: data.data.secondary_color,
+          background: data.data.background_color,
+        });
       } catch (err: any) {
         console.error(err);
         throw new Error("Could not fetch company data");
@@ -31,15 +39,23 @@ function App() {
 
   return (
     <>
-      <CartProvider>
-        <div
-          style={{ backgroundColor: establishmentData?.data.background_color }}
-        >
-          <Header />
+      <ThemeProvider
+        theme={
+          theme ?? {
+            primary: "#000000",
+            secondary: "#FFFFFF",
+            background: "#FFFFFF",
+          }
+        }
+      >
+        <CartProvider>
+          {establishmentData && (
+            <Header establishmentData={establishmentData.data} />
+          )}
           <Menu />
           <Footer />
-        </div>
-      </CartProvider>
+        </CartProvider>
+      </ThemeProvider>
     </>
   );
 }

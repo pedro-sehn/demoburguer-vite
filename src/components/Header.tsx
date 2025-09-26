@@ -1,67 +1,23 @@
-import { Skeleton } from "@mui/material";
-import { useEffect, useState } from "react";
 import type { EstablishmentData } from "../types/establishment";
 
-export function Header() {
-  const [establishmentData, setEstablishmentData] =
-    useState<EstablishmentData | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    async function getEstablishmentData() {
-      try {
-        const res = await fetch(
-          "https://demoburger.stbl.com.br/core/v2/app/store/config/?format=json&app_variant=mobile"
-        );
-        const data: EstablishmentData = await res.json();
-
-        if (!data.success) throw new Error("Could not fetch company data");
-
-        setEstablishmentData(data);
-      } catch (err: any) {
-        setError(err.message || "Unknown error");
-      }
-    }
-
-    getEstablishmentData();
-  }, []);
-
-  useEffect(() => {
-    if (error) console.error(error);
-  }, [error]);
-
+export function Header({
+  establishmentData,
+}: {
+  establishmentData: EstablishmentData["data"];
+}) {
   if (!establishmentData) {
     return (
       <header className="p-6 flex flex-col items-center text-center">
-        <Skeleton variant="circular" width={80} height={80} />
-        <Skeleton variant="text" width={120} height={32} className="mt-3" />
-        <Skeleton variant="text" width={80} height={24} className="mt-2" />
+        Carregando página...
       </header>
     );
   }
 
-  const {
-    logo,
-    name,
-    background_image,
-    background_color,
-    primary_color,
-    is_open,
-  } = establishmentData.data;
+  const { logo, name, is_open } = establishmentData;
 
   return (
-    <header
-      className="relative w-full text-white flex flex-col items-center text-center p-6"
-      style={{
-        background: background_image
-          ? `url(${background_image}) center/cover no-repeat`
-          : primary_color,
-      }}
-    >
-      <div
-        className="absolute inset-0"
-        style={{ backgroundColor: background_color }}
-      ></div>
+    <header className="relative w-full bg-[var(--primary-color)] text-white flex flex-col items-center text-center p-6">
+      <div className="absolute inset-0 bg-[var(--background-color)]"></div>
 
       <div className="relative flex flex-col items-center">
         <img

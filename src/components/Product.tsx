@@ -1,15 +1,21 @@
+import { useCart } from "../context/CartContext";
+import type { CartItem } from "../types/cart-item";
 import type { ProductData } from "../types/product";
 import { formatBRL } from "../utils/format-brl";
 
 export default function Product({
+  id,
   name,
   details,
   url_image,
   price,
   promotional_price,
 }: ProductData) {
+  const { cartItems, addItem, removeItem } = useCart();
+  const quantity = cartItems.find((i) => i.id === id)?.quantity ?? 0;
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-[160px_1fr] gap-4 p-4 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all">
+    <div className="flex flex-col md:flex-row gap-4 p-4">
       {url_image && (
         <div className="flex justify-center items-center">
           <img
@@ -38,7 +44,7 @@ export default function Product({
               <span className="text-green-600 font-bold text-lg">
                 {formatBRL(promotional_price)}
               </span>
-              <span className="text-white line-through text-sm">
+              <span className="text-zinc-500 line-through text-sm">
                 {formatBRL(price)}
               </span>
               <span className="bg-green-100 text-green-700 text-xs font-medium px-2 py-1 rounded-full">
@@ -50,6 +56,27 @@ export default function Product({
               {formatBRL(price)}
             </span>
           )}
+        </div>
+      </div>
+      <div className="mt-4 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => removeItem(id)}
+            className="w-8 h-8 bg-[var(--secondary-color)] sm:w-9 sm:h-9 text-lg rounded-full flex items-center justify-center transition-colors"
+          >
+            –
+          </button>
+
+          <span className="text-lg font-medium min-w-[24px] text-center">
+            {quantity}
+          </span>
+
+          <button
+            onClick={() => addItem({ id, price, quantity: 1 } as CartItem)}
+            className="w-8 h-8 bg-[var(--secondary-color)] sm:w-9 sm:h-9 text-lg rounded-full flex items-center justify-center transition-colors"
+          >
+            +
+          </button>
         </div>
       </div>
     </div>
