@@ -48,16 +48,18 @@ export default function Cart() {
               ))}
             </ul>
           )}
-          <div className="mt-4">
-            <button
-              onClick={() => {
-                // conclui o pedido e depois envia uma request para a api
-              }}
-              className="bg-[var(--primary-color)] w-full p-4 rounded-lg cursor-pointer"
-            >
-              Finalizar
-            </button>
-          </div>
+          {cartItems.length > 0 && (
+            <div className="mt-4">
+              <button
+                onClick={() => {
+                  // conclui o pedido e depois envia uma request para a api
+                }}
+                className="bg-[var(--primary-color)] w-full p-4 rounded-lg cursor-pointer"
+              >
+                Finalizar
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>
