@@ -53,6 +53,7 @@ export default function Cart() {
               <button
                 onClick={() => {
                   // conclui o pedido e depois envia uma request para a api
+                  alert("Pedido feito!")
                 }}
                 className="bg-[var(--primary-color)] w-full p-4 rounded-lg cursor-pointer"
               >
