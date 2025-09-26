@@ -42,9 +42,9 @@ function App() {
       <ThemeProvider
         theme={
           theme ?? {
-            primary: "#000000",
-            secondary: "#FFFFFF",
-            background: "#FFFFFF",
+            primary: "#FFF",
+            secondary: "#000",
+            background: "#000",
           }
         }
       >

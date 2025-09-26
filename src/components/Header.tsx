@@ -16,7 +16,7 @@ export function Header({
   const { logo, name, is_open } = establishmentData;
 
   return (
-    <header className="relative w-full bg-[var(--primary-color)] text-white flex flex-col items-center text-center p-6">
+    <header className="relative w-full bg-[var(--primary-color)] text-[var(--primary-text-color)] flex flex-col items-center text-center p-6">
       <div className="absolute inset-0 bg-[var(--background-color)]"></div>
 
       <div className="relative flex flex-col items-center">

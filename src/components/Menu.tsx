@@ -44,12 +44,12 @@ export default function Menu() {
   }, []);
 
   return (
-    <div className="bg-[var(--background-color)] px-4 py-6 flex flex-col items-center justify-center border-t-3 border-[var(--primary-color)]">
-      <h2 className="text-3xl font-bold mb-8 text-center">Cardápio</h2>
+    <div className="bg-[var(--background-color)] text-[var(--primary-text-color)] px-4 py-6 flex flex-col items-center justify-center border-t-3 border-[var(--primary-color)]">
+      <h2 className="text-3xl font-bold my-4 text-center">Cardápio</h2>
 
       {categories.length > 0 ? (
         categories.map((category) => (
-          <section key={category.id} id={category.name} className="mb-10">
+          <section key={category.id} id={category.name} className="w-full mb-10">
             <h3 className="text-xl sm:text-2xl font-semibold mb-4 border-b border-[var(--primary-color)] pb-2">
               {category.name}
             </h3>
@@ -59,7 +59,7 @@ export default function Menu() {
                 return (
                   <div
                     key={`${category.id}-${product.id}`}
-                    className="bg-white p-4 rounded-2xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+                    className="bg-[var(--background-color)] p-4 rounded-2xl shadow-md hover:shadow-lg transition-all border border-transparent hover:border-[var(--primary-color)] flex flex-col justify-between"
                   >
                     <Product {...product} />
                   </div>
